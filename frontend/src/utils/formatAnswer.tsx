@@ -1,6 +1,30 @@
+import type { ReactNode } from "react";
+
 type Block =
   | { type: "paragraph"; text: string }
   | { type: "list"; ordered: boolean; items: string[] };
+
+function parseInline(text: string): ReactNode[] {
+  const parts: ReactNode[] = [];
+  const regex = /\*\*(.+?)\*\*/g;
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+  let key = 0;
+
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(text.slice(lastIndex, match.index));
+    }
+    parts.push(<strong key={key++}>{match[1]}</strong>);
+    lastIndex = match.index + match[0].length;
+  }
+
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex));
+  }
+
+  return parts.length ? parts : [text];
+}
 
 function parseBlocks(text: string): Block[] {
   const blocks: Block[] = [];
@@ -24,8 +48,8 @@ function parseBlocks(text: string): Block[] {
       continue;
     }
 
-    const bulletMatch = trimmed.match(/^[•\-]\s*(.+)$/);
-    const numberedMatch = trimmed.match(/^\d+\.\s+(.+)$/);
+    const bulletMatch = trimmed.match(/^[•\-*]\s+(.+)$/);
+    const numberedMatch = trimmed.match(/^\d+[.)]\s+(.+)$/);
 
     if (bulletMatch) {
       if (!currentList || currentList.ordered) {
@@ -56,13 +80,13 @@ export function FormattedAnswer({ text }: { text: string }) {
     <div className="formatted-answer">
       {blocks.map((block, i) => {
         if (block.type === "paragraph") {
-          return <p key={i}>{block.text}</p>;
+          return <p key={i}>{parseInline(block.text)}</p>;
         }
         const ListTag = block.ordered ? "ol" : "ul";
         return (
           <ListTag key={i}>
             {block.items.map((item, j) => (
-              <li key={j}>{item}</li>
+              <li key={j}>{parseInline(item)}</li>
             ))}
           </ListTag>
         );

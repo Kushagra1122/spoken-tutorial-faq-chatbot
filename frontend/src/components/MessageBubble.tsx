@@ -1,6 +1,5 @@
 import type { ChatMessage } from "../types";
 import { FormattedAnswer } from "../utils/formatAnswer";
-import { SourceCitation } from "./SourceCitation";
 import { TypingIndicator } from "./TypingIndicator";
 
 interface MessageBubbleProps {
@@ -54,15 +53,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
         {message.loading ? (
           <TypingIndicator />
         ) : isBot && !message.error ? (
-          <>
-            <FormattedAnswer text={message.content} />
-            {message.confidence !== "low" && message.sources?.length ? (
-              <SourceCitation
-                sources={message.sources}
-                category={message.category}
-              />
-            ) : null}
-          </>
+          <FormattedAnswer text={message.content} />
         ) : (
           <p className="message__plain">{message.content}</p>
         )}

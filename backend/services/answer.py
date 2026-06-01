@@ -3,17 +3,10 @@ from dataclasses import dataclass
 from openai import OpenAI
 
 from config import settings
-from services.faq_store import FaqEntry
+from services.history import HistoryMessage
+from services.prompts import ANSWER_USER_TEMPLATE, SYSTEM_PROMPT
+from services.query_rewriter import QueryRewriter
 from services.retriever import FaqRetriever, SearchResult
-
-SYSTEM_PROMPT = """You are the official Spoken Tutorial FAQ assistant for organisers and students.
-Answer ONLY using the FAQ context provided below.
-Preserve all numbers, percentages, time limits, steps, and bullet lists exactly.
-Use clear, professional language suitable for an educational training portal.
-If the context does not contain enough information, politely state that the FAQ does not cover that topic.
-Do not invent policies, steps, or contact details.
-Keep answers concise and well-structured."""
-
 
 REFUSAL_MESSAGE = (
     "I could not find a matching answer in the official Spoken Tutorial FAQ. "
@@ -34,16 +27,16 @@ class AnswerService:
     def __init__(self, retriever: FaqRetriever) -> None:
         self.retriever = retriever
         self._client = OpenAI(api_key=settings.openai_api_key)
+        self._query_rewriter = QueryRewriter()
 
     def _format_context(self, results: list[SearchResult]) -> str:
         blocks = []
         for i, result in enumerate(results, start=1):
             entry = result.entry
             blocks.append(
-                f"FAQ {i} (score={result.score:.2f}):\n"
-                f"Category: {entry.category}\n"
-                f"Question: {entry.question}\n"
-                f"Answer: {entry.answer}"
+                f"--- Excerpt {i} ({entry.category}) ---\n"
+                f"Topic: {entry.question}\n"
+                f"Official answer:\n{entry.answer}"
             )
         return "\n\n".join(blocks)
 
@@ -59,22 +52,28 @@ class AnswerService:
             sources.append({"id": entry.id, "question": entry.question})
         return sources
 
-    def _generate_with_llm(self, message: str, results: list[SearchResult]) -> str:
+    def _generate_answer(
+        self,
+        message: str,
+        results: list[SearchResult],
+        history: list[HistoryMessage],
+    ) -> str:
         context = self._format_context(results)
+        user_content = ANSWER_USER_TEMPLATE.format(
+            context=context,
+            question=message,
+        )
+
+        messages: list[dict[str, str]] = [{"role": "system", "content": SYSTEM_PROMPT}]
+        for item in history[-settings.max_history_messages :]:
+            messages.append({"role": item.role, "content": item.content})
+        messages.append({"role": "user", "content": user_content})
+
         response = self._client.chat.completions.create(
             model=settings.openai_chat_model,
-            messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {
-                    "role": "user",
-                    "content": (
-                        f"User question: {message}\n\n"
-                        f"FAQ context:\n{context}\n\n"
-                        "Answer the user question using only the FAQ context."
-                    ),
-                },
-            ],
-            temperature=0.2,
+            messages=messages,
+            temperature=0.15,
+            max_tokens=1024,
         )
         content = response.choices[0].message.content
         return content.strip() if content else REFUSAL_MESSAGE
@@ -91,8 +90,18 @@ class AnswerService:
         margin = top.score - results[1].score
         return margin >= settings.similarity_margin
 
-    def answer(self, message: str) -> ChatResponse:
-        results = self.retriever.search(message, top_k=3)
+    def answer(
+        self,
+        message: str,
+        history: list[HistoryMessage] | None = None,
+    ) -> ChatResponse:
+        history = history or []
+        search_query = self._query_rewriter.rewrite(message, history)
+        results = self.retriever.search(
+            search_query,
+            top_k=settings.retrieval_top_k,
+        )
+
         if not results:
             return ChatResponse(
                 answer=REFUSAL_MESSAGE,
@@ -113,18 +122,12 @@ class AnswerService:
                 sources=sources,
             )
 
-        if top.score >= settings.similarity_high:
-            return ChatResponse(
-                answer=top.entry.answer,
-                confidence="high",
-                category=category,
-                sources=sources,
-            )
+        answer_text = self._generate_answer(message, results, history)
+        confidence = "high" if top.score >= settings.similarity_high else "medium"
 
-        llm_answer = self._generate_with_llm(message, results)
         return ChatResponse(
-            answer=llm_answer,
-            confidence="medium",
+            answer=answer_text,
+            confidence=confidence,
             category=category,
             sources=sources,
         )

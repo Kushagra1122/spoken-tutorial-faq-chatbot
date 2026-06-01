@@ -1,4 +1,4 @@
-import type { ChatApiResponse } from "./types";
+import type { ChatApiResponse, ChatHistoryItem } from "./types";
 
 function getApiBase(): string {
   const fromQuery = new URLSearchParams(window.location.search).get("api");
@@ -15,11 +15,14 @@ function getApiBase(): string {
 
 export const API_BASE = getApiBase();
 
-export async function sendChatMessage(message: string): Promise<ChatApiResponse> {
+export async function sendChatMessage(
+  message: string,
+  history: ChatHistoryItem[] = [],
+): Promise<ChatApiResponse> {
   const res = await fetch(`${API_BASE}/api/chat`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message }),
+    body: JSON.stringify({ message, history }),
   });
 
   if (!res.ok) {

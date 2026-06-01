@@ -16,6 +16,11 @@ export interface ChatMessage {
   error?: boolean;
 }
 
+export interface ChatHistoryItem {
+  role: "user" | "assistant";
+  content: string;
+}
+
 export interface ChatApiResponse {
   answer: string;
   confidence: string;

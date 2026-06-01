@@ -20,6 +20,8 @@ class Settings(BaseSettings):
     similarity_min_absolute: float = 0.50
     similarity_margin: float = 0.18
     keyword_weight: float = 0.35
+    max_history_messages: int = 20
+    retrieval_top_k: int = 5
     faqs_path: Path = ROOT_DIR / "data" / "faqs.json"
     cors_origins: list[str] = [
         "http://localhost:5173",

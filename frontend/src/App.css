@@ -227,6 +227,11 @@
   color: white;
 }
 
+.formatted-answer strong {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
 .formatted-answer p {
   margin: 0 0 0.5rem;
 }
@@ -247,52 +252,6 @@
 
 .formatted-answer li:last-child {
   margin-bottom: 0;
-}
-
-/* Citation */
-.citation {
-  margin-top: 0.75rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--border);
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.citation__category {
-  font-size: 0.7rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--brand);
-  background: var(--brand-soft);
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-}
-
-.citation__toggle {
-  background: none;
-  border: none;
-  padding: 0;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-  cursor: pointer;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-.citation__toggle:hover {
-  color: var(--brand);
-}
-
-.citation__text {
-  flex: 1 1 100%;
-  margin: 0.25rem 0 0;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  line-height: 1.45;
 }
 
 /* Typing */

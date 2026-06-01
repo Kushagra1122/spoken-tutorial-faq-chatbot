@@ -4,13 +4,22 @@ import { Chat } from "./components/Chat";
 import { Composer } from "./components/Composer";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
-import type { ChatMessage } from "./types";
+import type { ChatHistoryItem, ChatMessage } from "./types";
 import "./App.css";
 
 let messageId = 0;
 function nextId() {
   messageId += 1;
   return String(messageId);
+}
+
+function toApiHistory(messages: ChatMessage[]): ChatHistoryItem[] {
+  return messages
+    .filter((m) => !m.loading && !m.error)
+    .map((m) => ({
+      role: m.role === "user" ? "user" : "assistant",
+      content: m.content,
+    }));
 }
 
 export default function App() {
@@ -42,11 +51,15 @@ export default function App() {
         loading: true,
       };
 
-      setMessages((prev) => [...prev, userMessage, loadingMessage]);
+      let historyForApi: ChatHistoryItem[] = [];
+      setMessages((prev) => {
+        historyForApi = toApiHistory(prev);
+        return [...prev, userMessage, loadingMessage];
+      });
       setLoading(true);
 
       try {
-        const data = await sendChatMessage(trimmed);
+        const data = await sendChatMessage(trimmed, historyForApi);
         setConnected(true);
         setMessages((prev) => {
           const withoutLoading = prev.filter((m) => m.id !== loadingMessage.id);

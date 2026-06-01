@@ -82,14 +82,14 @@ Lists FAQ categories.
 
 ## How it works
 
-1. All Q&A pairs live in [`data/faqs.json`](data/faqs.json) (source of truth).
-2. On startup, questions + aliases are embedded with OpenAI `text-embedding-3-small`.
-3. User queries are embedded and matched by cosine similarity.
-4. **High confidence** (≥ 0.82): return the canonical FAQ answer verbatim.
-5. **Medium confidence** (0.65–0.82): OpenAI rephrases using only retrieved context.
-6. **Low confidence** (< 0.65): refuse rather than guess.
+1. All Q&A pairs from the official BOT FAQs PDF live in [`data/faqs.json`](data/faqs.json).
+2. On startup, FAQs are embedded with OpenAI `text-embedding-3-small` (hybrid keyword + semantic search).
+3. Follow-up questions are rewritten by the LLM into a standalone search query using chat history.
+4. The top 5 matching FAQ excerpts are retrieved and passed to GPT with strict grounding rules.
+5. GPT frames each answer: direct summary first, then numbered steps or bullet lists — facts preserved exactly.
+6. **Low confidence** matches are refused rather than guessed.
 
-Tune thresholds via `SIMILARITY_HIGH` and `SIMILARITY_LOW` in `.env`.
+Tune thresholds via `SIMILARITY_HIGH`, `SIMILARITY_LOW`, and `RETRIEVAL_TOP_K` in `.env`.
 
 ## Tests
 
