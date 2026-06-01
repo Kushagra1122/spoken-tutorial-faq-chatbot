@@ -1,0 +1,247 @@
+[
+  {
+    "id": "master_batch_definition",
+    "category": "Master Batch",
+    "question": "What is a Master Batch?",
+    "answer": "Master Batch is the participant list uploaded by organiser containing student details for training and certification.",
+    "aliases": ["what is master batch", "participant list", "student list upload", "masterbatch meaning"]
+  },
+  {
+    "id": "master_batch_required_columns",
+    "category": "Master Batch",
+    "question": "What details are required in Master Batch?",
+    "answer": "Only these columns:\n• First Name\n• Last Name\n• Email ID\n• Gender",
+    "aliases": ["required columns", "what fields needed", "master batch columns", "student details required"]
+  },
+  {
+    "id": "master_batch_no_headings",
+    "category": "Master Batch",
+    "question": "Should column headings be added in Master Batch?",
+    "answer": "No. Column headings should NOT be added.",
+    "aliases": ["headers in csv", "column titles", "first row headings", "include header row"]
+  },
+  {
+    "id": "master_batch_no_serial",
+    "category": "Master Batch",
+    "question": "Should serial numbers be added?",
+    "answer": "No. S.No. should NOT be added.",
+    "aliases": ["serial number", "s no column", "sr no", "row numbers"]
+  },
+  {
+    "id": "master_batch_middle_names",
+    "category": "Master Batch",
+    "question": "Can middle names or initials be used?",
+    "answer": "Yes, middle names can be clubbed with First name or last name.\nFor example, if the learner's name is Jessie Ranjitham Velusamy, Jessie as first name and Ranjitham Velusamy as Last name can be used.\nInitials involved in the name Jessie R Velusamy can be used but not the entire name should be represented as J R V.",
+    "aliases": ["middle name", "initials in name", "how to split name", "full name format"]
+  },
+  {
+    "id": "master_batch_format",
+    "category": "Master Batch",
+    "question": "What format should be used for Master Batch upload?",
+    "answer": "Master Batch must be uploaded in .csv (MS-DOS) format only.",
+    "aliases": ["csv format", "file type for upload", "ms dos csv", "excel format", "how to upload master batch"]
+  },
+  {
+    "id": "master_batch_limit_500",
+    "category": "Master Batch",
+    "question": "How many students can be uploaded in one Master Batch?",
+    "answer": "Maximum 500 students per Master Batch.",
+    "aliases": ["max students", "student limit", "how many kids per batch", "maximum upload size", "500 limit"]
+  },
+  {
+    "id": "master_batch_exceed_500",
+    "category": "Master Batch",
+    "question": "What if student count exceeds 500?",
+    "answer": "Split into multiple batches like:\n• Chemistry1\n• Chemistry2",
+    "aliases": ["more than 500 students", "split batch", "too many students", "multiple batches"]
+  },
+  {
+    "id": "master_batch_one_department",
+    "category": "Master Batch",
+    "question": "Can two departments be combined in one Master Batch?",
+    "answer": "No. One Master Batch should contain only one department. Make a batch department and year wise.",
+    "aliases": ["multiple departments", "combine departments", "two dept one batch", "department wise batch"]
+  },
+  {
+    "id": "master_batch_validation_time",
+    "category": "Master Batch",
+    "question": "How much time does Master Batch validation take?",
+    "answer": "Validation usually takes 48 hours after upload.",
+    "aliases": ["validation duration", "how long to verify", "approval time master batch", "48 hours"]
+  },
+  {
+    "id": "master_batch_common_errors",
+    "category": "Master Batch",
+    "question": "What are common Master Batch errors?",
+    "answer": "Common errors:\n• Invalid email ID\n• Duplicate email ID\n• Existing student in another batch\n• Wrong CSV format\n• Blank fields\n• Added title headers like Sr no. First name, last name, Email ID, Gender.",
+    "aliases": ["upload errors", "master batch failed", "why validation failed", "csv errors"]
+  },
+  {
+    "id": "master_batch_batch_year",
+    "category": "Master Batch",
+    "question": "Can two batch year students be combined in one Master Batch?",
+    "answer": "No. Batch year wise student data has to be separately created.",
+    "aliases": ["different years same batch", "multiple batch years", "year wise master batch"]
+  },
+  {
+    "id": "master_batch_organiser_edit",
+    "category": "Master Batch",
+    "question": "Can organiser edit Master Batch later?",
+    "answer": "Yes. Organiser can edit:\n• Department\n• Year\n• Student name\n• Email ID\n• Gender",
+    "aliases": ["edit master batch", "change student details", "update participant list", "modify batch"]
+  },
+  {
+    "id": "test_request_steps",
+    "category": "Test & Invigilator",
+    "question": "How can I request an online test?",
+    "answer": "Steps:\n1. Login to portal\n2. Under SoftwareTraining - Training & Payment Dashboard\n3. Select New Test Request\n4. Enter Batch Code\n5. Select Invigilator\n6. Select Date & Time\n7. Submit request",
+    "aliases": ["request online test", "schedule test", "new test request", "how to book test", "raise test request"]
+  },
+  {
+    "id": "test_stp_mandatory",
+    "category": "Test & Invigilator",
+    "question": "Is STP mandatory before requesting test?",
+    "answer": "Yes. STPs and Select Participant list must be completed before test request.",
+    "aliases": ["stp required", "semester training planner before test", "participant list mandatory"]
+  },
+  {
+    "id": "test_invigilator_role",
+    "category": "Test & Invigilator",
+    "question": "Who is an Invigilator?",
+    "answer": "Invigilator is the authorised person who supervises the online assessment test.",
+    "aliases": ["what is invigilator", "invigilator meaning", "who supervises test"]
+  },
+  {
+    "id": "organiser_invigilator_different",
+    "category": "Test & Invigilator",
+    "question": "Can Organiser and Invigilator be same person for the same batch?",
+    "answer": "No. Organiser and Invigilator cannot be the same person for the same batch.",
+    "aliases": ["same person invigilate and organise", "organiser as invigilator", "one person both roles"]
+  },
+  {
+    "id": "invigilator_register_before",
+    "category": "Test & Invigilator",
+    "question": "Should Invigilator register before test request?",
+    "answer": "Yes. Invigilator must register before raising test request.",
+    "aliases": ["invigilator registration", "register invigilator first"]
+  },
+  {
+    "id": "test_request_approval",
+    "category": "Test & Invigilator",
+    "question": "Who approves the test request?",
+    "answer": "Test request approval is done by:\n1. Spoken Tutorial Training Manager\n2. Invigilator",
+    "aliases": ["test approval", "who approves test", "training manager approval"]
+  },
+  {
+    "id": "test_c_and_cpp_separate",
+    "category": "Test & Invigilator",
+    "question": "Is separate test request needed for C and C++?",
+    "answer": "Yes. Separate test requests are required for C and C++.",
+    "aliases": ["c vs c++ test", "multiple language tests", "separate requests c cpp"]
+  },
+  {
+    "id": "student_test_how",
+    "category": "Test & Invigilator",
+    "question": "How do students appear for test?",
+    "answer": "Students login using their credentials under student dashboard and attempt the online assessment test during scheduled time.",
+    "aliases": ["how to take test", "student exam process", "appear for assessment"]
+  },
+  {
+    "id": "test_after_passing",
+    "category": "Test & Invigilator",
+    "question": "What happens after passing the test?",
+    "answer": "Students receive Completion Certificates.",
+    "aliases": ["after pass test", "certificate after test", "what happens when you pass"]
+  },
+  {
+    "id": "certificate_download",
+    "category": "Test & Invigilator",
+    "question": "How can students download certificates?",
+    "answer": "Student can download certificates from their student dashboard under completed test tab.",
+    "aliases": ["download certificate", "get certificate", "where is certificate", "completed test tab"]
+  },
+  {
+    "id": "certificate_not_generated",
+    "category": "Test & Invigilator",
+    "question": "Why is certificate not generated?",
+    "answer": "Possible reasons:\n• Student failed test\n• Attendance issue\n• Participant list incomplete\n• Incorrect email ID\n• Test not properly approved\n• Internet stability/connectivity issue\n• Student missed in Masterbatch",
+    "aliases": ["cert not showing", "no certificate", "certificate missing", "why no cert"]
+  },
+  {
+    "id": "certificate_minimum_40",
+    "category": "Test & Invigilator",
+    "question": "What is the minimum score required to be eligible to receive Course completion Certificate?",
+    "answer": "One must score at least 40% in the online assessment test.",
+    "aliases": ["minimum marks", "pass percentage", "minimum score certificate", "40 percent", "passing marks", "minimum pass score", "min pass score", "pass score required", "what is minimum pass score"]
+  },
+  {
+    "id": "recommended_browser",
+    "category": "Technical & Support",
+    "question": "What browser is recommended?",
+    "answer": "Firefox and Chrome browser is recommended for workshop and test activities.",
+    "aliases": ["which browser", "browser support", "firefox chrome", "best browser for test"]
+  },
+  {
+    "id": "offline_workshops",
+    "category": "Technical & Support",
+    "question": "Can workshops be conducted offline?",
+    "answer": "Yes. Downloaded tutorials can be used in offline mode.",
+    "aliases": ["offline mode", "without internet workshop", "download tutorials offline"]
+  },
+  {
+    "id": "infrastructure_required",
+    "category": "Technical & Support",
+    "question": "What infrastructure is required?",
+    "answer": "Required:\n• Computer lab\n• Earphones/headphones\n• Firefox / Chrome browser\n• Download Audio Video Tutorial\n• Installed software\n• Internet (optional for offline workshops)",
+    "aliases": ["lab requirements", "what equipment needed", "infrastructure setup", "computer lab needs"]
+  },
+  {
+    "id": "videos_not_playing",
+    "category": "Technical & Support",
+    "question": "What if videos are not playing?",
+    "answer": "Try:\n• Firefox / Chrome browser\n• Re-downloading tutorials\n• Checking audio settings\n• Checking internet connection",
+    "aliases": ["video not working", "tutorial won't play", "playback issue", "audio video problem"]
+  },
+  {
+    "id": "forgot_password",
+    "category": "Technical & Support",
+    "question": "What if students forget passwords?",
+    "answer": "Students can use the Forgot Password option under student dashboard on the portal.",
+    "aliases": ["forgot pwd", "reset password", "lost password", "password recovery"]
+  },
+  {
+    "id": "email_already_used",
+    "category": "Technical & Support",
+    "question": "What if email ID is already used?",
+    "answer": "A new email ID must be used because one email cannot exist in multiple colleges/departments/batches.",
+    "aliases": ["duplicate email", "email exists", "email taken", "same email another batch"]
+  },
+  {
+    "id": "add_students_later",
+    "category": "Technical & Support",
+    "question": "How can additional students be added later?",
+    "answer": "Use \"Add Student\" option in existing Master Batch.",
+    "aliases": ["add more students", "new student after upload", "add student to batch"]
+  },
+  {
+    "id": "edit_stp",
+    "category": "Technical & Support",
+    "question": "Can organiser edit STP after submission?",
+    "answer": "Yes. Organiser can edit:\n• Semester start date\n• Course\n• Department\n• Year\nbefore marking Participant List.",
+    "aliases": ["edit semester training planner", "modify stp", "change stp details"]
+  },
+  {
+    "id": "stp_training_types",
+    "category": "Technical & Support",
+    "question": "What training types are available in STP?",
+    "answer": "Training Types:\n• Outside lab hours\n• Mapped in lab hours\n• Unmapped in lab hours",
+    "aliases": ["stp types", "training type options", "lab hours training"]
+  },
+  {
+    "id": "after_master_batch_verification",
+    "category": "Technical & Support",
+    "question": "What should organiser do after Master Batch verification?",
+    "answer": "Organiser should confirm whether all students received username and password emails for test conduction.\nShould complete Step 2 – Semester Training Planner Form and Step 3 – Select Participant list.",
+    "aliases": ["after verification", "next steps master batch", "post verification organiser", "step 2 step 3"]
+  }
+]
