@@ -75,6 +75,7 @@ class SarvamService:
             "speaker": settings.sarvam_tts_speaker,
             "output_audio_codec": settings.sarvam_tts_codec,
             "pace": settings.sarvam_tts_pace,
+            "temperature": settings.sarvam_tts_temperature,
         }
 
         async with httpx.AsyncClient(timeout=60.0) as client:

@@ -20,7 +20,8 @@ class Settings(BaseSettings):
     sarvam_tts_language: str = "en-IN"
     sarvam_tts_speaker: str = "shubh"
     sarvam_tts_codec: str = "mp3"
-    sarvam_tts_pace: float = 1.0
+    sarvam_tts_pace: float = 0.85
+    sarvam_tts_temperature: float = 0.4
     openai_embedding_model: str = "text-embedding-3-small"
     openai_chat_model: str = "gpt-4o-mini"
     similarity_high: float = 0.82
