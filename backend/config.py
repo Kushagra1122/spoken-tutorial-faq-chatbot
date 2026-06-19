@@ -13,6 +13,14 @@ class Settings(BaseSettings):
     )
 
     openai_api_key: str
+    sarvam_api_key: str = ""
+    sarvam_stt_model: str = "saaras:v3"
+    sarvam_stt_language: str = "en-IN"
+    sarvam_tts_model: str = "bulbul:v3"
+    sarvam_tts_language: str = "en-IN"
+    sarvam_tts_speaker: str = "shubh"
+    sarvam_tts_codec: str = "mp3"
+    sarvam_tts_pace: float = 1.0
     openai_embedding_model: str = "text-embedding-3-small"
     openai_chat_model: str = "gpt-4o-mini"
     similarity_high: float = 0.82

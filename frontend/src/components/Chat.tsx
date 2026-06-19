@@ -4,9 +4,19 @@ import { MessageBubble } from "./MessageBubble";
 
 interface ChatProps {
   messages: ChatMessage[];
+  voiceEnabled?: boolean;
+  playingId?: string | null;
+  speechLoadingId?: string | null;
+  onSpeak?: (messageId: string, text: string) => void;
 }
 
-export function Chat({ messages }: ChatProps) {
+export function Chat({
+  messages,
+  voiceEnabled,
+  playingId,
+  speechLoadingId,
+  onSpeak,
+}: ChatProps) {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -22,11 +32,23 @@ export function Chat({ messages }: ChatProps) {
           <p className="chat-panel__welcome">
             Welcome. Ask a question about Master Batch, online tests, certificates,
             or technical support.
+            {voiceEnabled && " You can type or use the microphone."}
           </p>
         ) : (
           <div className="chat-panel__messages">
             {messages.map((msg) => (
-              <MessageBubble key={msg.id} message={msg} />
+              <MessageBubble
+                key={msg.id}
+                message={msg}
+                voiceEnabled={voiceEnabled && msg.role === "bot" && !msg.loading && !msg.error}
+                isSpeaking={playingId === msg.id}
+                isSpeechLoading={speechLoadingId === msg.id}
+                onSpeak={
+                  onSpeak && msg.role === "bot" && !msg.loading && !msg.error
+                    ? () => onSpeak(msg.id, msg.content)
+                    : undefined
+                }
+              />
             ))}
           </div>
         )}

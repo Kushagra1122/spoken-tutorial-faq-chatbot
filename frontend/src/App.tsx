@@ -4,7 +4,9 @@ import { Chat } from "./components/Chat";
 import { Composer } from "./components/Composer";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
+import { useSpeechPlayback } from "./hooks/useSpeechPlayback";
 import type { ChatHistoryItem, ChatMessage } from "./types";
+import { fetchVoiceStatus } from "./voice";
 import "./App.css";
 
 let messageId = 0;
@@ -26,11 +28,14 @@ export default function App() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [loading, setLoading] = useState(false);
   const [connected, setConnected] = useState(true);
+  const [voiceEnabled, setVoiceEnabled] = useState(false);
+  const { playingId, loadingId, speak } = useSpeechPlayback();
 
   useEffect(() => {
     fetch(`${API_BASE}/api/health`)
       .then((r) => setConnected(r.ok))
       .catch(() => setConnected(false));
+    fetchVoiceStatus().then((s) => setVoiceEnabled(s.enabled));
   }, []);
 
   const sendMessage = useCallback(
@@ -107,13 +112,23 @@ export default function App() {
       <div className="app">
         <Header connected={connected} />
         <div className="app__body">
-          <Chat messages={messages} />
+          <Chat
+            messages={messages}
+            voiceEnabled={voiceEnabled}
+            playingId={playingId}
+            speechLoadingId={loadingId}
+            onSpeak={speak}
+          />
         </div>
         <div className="app__composer">
           {hasConversation && (
             <p className="app__composer-label">Continue the conversation</p>
           )}
-          <Composer onSend={sendMessage} disabled={loading} />
+          <Composer
+            onSend={sendMessage}
+            disabled={loading}
+            voiceEnabled={voiceEnabled}
+          />
         </div>
         <Footer />
       </div>

@@ -254,6 +254,44 @@
   margin-bottom: 0;
 }
 
+.message__speak {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.65rem;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-chat);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.message__speak svg {
+  width: 14px;
+  height: 14px;
+}
+
+.message__speak:hover:not(:disabled) {
+  border-color: var(--brand-light);
+  color: var(--brand);
+  background: var(--brand-soft);
+}
+
+.message__speak--active {
+  border-color: var(--brand);
+  color: var(--brand);
+  background: var(--brand-soft);
+}
+
+.message__speak:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
 /* Typing */
 .typing {
   display: flex;
@@ -315,6 +353,101 @@
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
+}
+
+.composer__input-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.composer__mic {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-chat);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.composer__mic svg {
+  width: 20px;
+  height: 20px;
+}
+
+.composer__mic:hover:not(:disabled) {
+  border-color: var(--brand-light);
+  color: var(--brand);
+  background: var(--brand-soft);
+}
+
+.composer__mic--active {
+  border-color: #ef4444;
+  color: #ef4444;
+  background: #fef2f2;
+  animation: mic-pulse 1.2s ease-in-out infinite;
+}
+
+.composer__mic:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.composer__mic-spinner,
+.message__speak-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border);
+  border-top-color: var(--brand);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes mic-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.composer__voice-error {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #dc2626;
+}
+
+.composer__input-row textarea {
+  flex: 1;
+  width: 100%;
+  resize: none;
+  background: var(--bg-chat);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.composer__textarea--listening {
+  border-color: var(--brand-light);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
 }
 
 .composer textarea {

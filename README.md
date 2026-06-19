@@ -6,14 +6,15 @@ A web chatbot that answers questions from the Spoken Tutorial BOT FAQs using sem
 
 - Python 3.10+
 - [OpenAI API key](https://platform.openai.com/api-keys)
+- [Sarvam AI API key](https://dashboard.sarvam.ai/) (optional, for voice input/output)
 
 ## Setup
 
-1. Copy environment file and add your API key:
+1. Copy environment file and add your API keys:
 
 ```bash
 cp .env.example .env
-# Edit .env and set OPENAI_API_KEY
+# Edit .env and set OPENAI_API_KEY and SARVAM_API_KEY
 ```
 
 2. Install backend dependencies:
@@ -79,6 +80,21 @@ Health check.
 ### `GET /api/categories`
 
 Lists FAQ categories.
+
+### Voice (Sarvam AI)
+
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/voice/status` | Whether voice is enabled (`SARVAM_API_KEY` set) |
+| `POST /api/voice/transcribe` | Upload audio (webm/wav) → transcript |
+| `POST /api/voice/synthesize` | `{ "text": "..." }` → base64 MP3 audio |
+
+**UI:** Microphone button in the composer (speech-to-text). **Listen** button on bot replies (text-to-speech via Sarvam `bulbul:v3`).
+
+Configure in `.env`:
+- `SARVAM_API_KEY` — from [Sarvam dashboard](https://dashboard.sarvam.ai/)
+- `SARVAM_TTS_SPEAKER` — e.g. `shubh`, `priya` (see Sarvam docs)
+- `SARVAM_STT_LANGUAGE` / `SARVAM_TTS_LANGUAGE` — default `en-IN`
 
 ## How it works
 

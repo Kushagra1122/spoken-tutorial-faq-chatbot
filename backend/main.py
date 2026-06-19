@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from config import settings
 from routes.chat import router as chat_router, set_answer_service
+from routes.voice import router as voice_router
 from services.answer import AnswerService
 from services.retriever import FaqRetriever
 
@@ -32,6 +33,7 @@ app.add_middleware(
 )
 
 app.include_router(chat_router)
+app.include_router(voice_router)
 
 
 @app.get("/api/health")

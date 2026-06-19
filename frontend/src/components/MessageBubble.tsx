@@ -4,6 +4,10 @@ import { TypingIndicator } from "./TypingIndicator";
 
 interface MessageBubbleProps {
   message: ChatMessage;
+  voiceEnabled?: boolean;
+  isSpeaking?: boolean;
+  isSpeechLoading?: boolean;
+  onSpeak?: () => void;
 }
 
 function BotAvatar() {
@@ -34,7 +38,13 @@ function UserAvatar() {
   );
 }
 
-export function MessageBubble({ message }: MessageBubbleProps) {
+export function MessageBubble({
+  message,
+  voiceEnabled,
+  isSpeaking,
+  isSpeechLoading,
+  onSpeak,
+}: MessageBubbleProps) {
   const isUser = message.role === "user";
   const isBot = message.role === "bot";
 
@@ -53,7 +63,31 @@ export function MessageBubble({ message }: MessageBubbleProps) {
         {message.loading ? (
           <TypingIndicator />
         ) : isBot && !message.error ? (
-          <FormattedAnswer text={message.content} />
+          <>
+            <FormattedAnswer text={message.content} />
+            {voiceEnabled && onSpeak && (
+              <button
+                type="button"
+                className={`message__speak${isSpeaking ? " message__speak--active" : ""}`}
+                onClick={onSpeak}
+                disabled={isSpeechLoading}
+                aria-label={isSpeaking ? "Stop speaking" : "Listen to answer"}
+              >
+                {isSpeechLoading ? (
+                  <span className="message__speak-spinner" aria-hidden="true" />
+                ) : (
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    {isSpeaking ? (
+                      <path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z" />
+                    ) : (
+                      <path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2a4.5 4.5 0 00-2.5-4.03v8.06a4.48 4.48 0 002.5-4.03zM14 3.23v2.06a7 7 0 010 13.52v2.06a9 9 0 000-17.61z" />
+                    )}
+                  </svg>
+                )}
+                {isSpeaking ? "Stop" : "Listen"}
+              </button>
+            )}
+          </>
         ) : (
           <p className="message__plain">{message.content}</p>
         )}
