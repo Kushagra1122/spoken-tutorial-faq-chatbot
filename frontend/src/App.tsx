@@ -1,12 +1,12 @@
-import { useCallback, useEffect, useState } from "react";
-import { API_BASE, sendChatMessage } from "./api";
+import { useCallback, useState } from "react";
+import { sendChatMessage } from "./api";
 import { Chat } from "./components/Chat";
 import { Composer } from "./components/Composer";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
+import { useBackendConnection } from "./hooks/useBackendConnection";
 import { useSpeechPlayback } from "./hooks/useSpeechPlayback";
 import type { ChatHistoryItem, ChatMessage } from "./types";
-import { fetchVoiceStatus } from "./voice";
 import "./App.css";
 
 let messageId = 0;
@@ -27,16 +27,8 @@ function toApiHistory(messages: ChatMessage[]): ChatHistoryItem[] {
 export default function App() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [loading, setLoading] = useState(false);
-  const [connected, setConnected] = useState(true);
-  const [voiceEnabled, setVoiceEnabled] = useState(false);
+  const { connected, voiceEnabled, checking, refresh } = useBackendConnection();
   const { playingId, loadingId, speak } = useSpeechPlayback();
-
-  useEffect(() => {
-    fetch(`${API_BASE}/api/health`)
-      .then((r) => setConnected(r.ok))
-      .catch(() => setConnected(false));
-    fetchVoiceStatus().then((s) => setVoiceEnabled(s.enabled));
-  }, []);
 
   const sendMessage = useCallback(
     async (text: string) => {
@@ -65,7 +57,7 @@ export default function App() {
 
       try {
         const data = await sendChatMessage(trimmed, historyForApi);
-        setConnected(true);
+        void refresh();
         setMessages((prev) => {
           const withoutLoading = prev.filter((m) => m.id !== loadingMessage.id);
           return [
@@ -81,7 +73,7 @@ export default function App() {
           ];
         });
       } catch (err) {
-        setConnected(false);
+        void refresh();
         const message =
           err instanceof Error
             ? err.message
@@ -102,19 +94,29 @@ export default function App() {
         setLoading(false);
       }
     },
-    [loading],
+    [loading, refresh],
   );
 
   const hasConversation = messages.length > 0;
+  const micReady = connected && voiceEnabled;
 
   return (
     <div className="shell">
       <div className="app">
-        <Header connected={connected} />
+        <Header connected={connected} checking={checking} onRetry={refresh} />
+        {!connected && (
+          <div className="app__offline-banner" role="alert">
+            <strong>Backend offline.</strong> Start the server in another terminal:{" "}
+            <code>
+              cd backend && source .venv/bin/activate && uvicorn main:app --reload
+              --port 8000
+            </code>
+          </div>
+        )}
         <div className="app__body">
           <Chat
             messages={messages}
-            voiceEnabled={voiceEnabled}
+            voiceEnabled={micReady}
             playingId={playingId}
             speechLoadingId={loadingId}
             onSpeak={speak}
@@ -126,8 +128,9 @@ export default function App() {
           )}
           <Composer
             onSend={sendMessage}
-            disabled={loading}
+            disabled={loading || !connected}
             voiceEnabled={voiceEnabled}
+            connected={connected}
           />
         </div>
         <Footer />

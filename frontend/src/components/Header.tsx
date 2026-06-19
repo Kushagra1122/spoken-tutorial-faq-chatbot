@@ -1,8 +1,16 @@
 interface HeaderProps {
   connected?: boolean;
+  checking?: boolean;
+  onRetry?: () => void;
 }
 
-export function Header({ connected = true }: HeaderProps) {
+export function Header({ connected = false, checking = false, onRetry }: HeaderProps) {
+  const statusLabel = checking
+    ? "Checking…"
+    : connected
+      ? "Online"
+      : "Offline";
+
   return (
     <header className="header">
       <div className="header__brand">
@@ -18,14 +26,18 @@ export function Header({ connected = true }: HeaderProps) {
           </p>
         </div>
       </div>
-      <div
+      <button
+        type="button"
         className={`header__status ${connected ? "header__status--online" : ""}`}
-        role="status"
-        aria-label={connected ? "Assistant online" : "Assistant offline"}
+        onClick={onRetry}
+        title={connected ? "Connected to backend" : "Click to retry connection"}
+        aria-label={
+          connected ? "Assistant online" : "Assistant offline — click to retry"
+        }
       >
         <span className="header__status-dot" />
-        {connected ? "Online" : "Offline"}
-      </div>
+        {statusLabel}
+      </button>
     </header>
   );
 }

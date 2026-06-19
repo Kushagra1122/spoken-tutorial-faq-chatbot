@@ -88,6 +88,32 @@
   border-radius: 999px;
   background: var(--bg-subtle);
   border: 1px solid var(--border);
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.header__status:hover {
+  border-color: var(--brand-light);
+}
+
+.app__offline-banner {
+  margin: 0;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #92400e;
+  background: #fffbeb;
+  border-bottom: 1px solid #fde68a;
+}
+
+.app__offline-banner code {
+  display: block;
+  margin-top: 0.35rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 0.72rem;
+  word-break: break-word;
 }
 
 .header__status--online {
@@ -392,6 +418,10 @@
   color: #ef4444;
   background: #fef2f2;
   animation: mic-pulse 1.2s ease-in-out infinite;
+}
+
+.composer__mic--unavailable {
+  opacity: 0.55;
 }
 
 .composer__mic:disabled {
