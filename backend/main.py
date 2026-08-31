@@ -4,7 +4,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from config import settings
+from routes.auth import router as auth_router
 from routes.chat import router as chat_router, set_answer_service
+from routes.faqs_admin import router as faqs_admin_router
 from routes.voice import router as voice_router
 from services.answer import AnswerService
 from services.retriever import FaqRetriever
@@ -32,7 +34,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(auth_router)
 app.include_router(chat_router)
+app.include_router(faqs_admin_router)
 app.include_router(voice_router)
 
 

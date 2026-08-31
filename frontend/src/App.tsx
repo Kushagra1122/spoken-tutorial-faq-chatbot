@@ -1,9 +1,12 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { sendChatMessage } from "./api";
+import { ChangeContentPanel } from "./components/ChangeContentPanel";
 import { Chat } from "./components/Chat";
 import { Composer } from "./components/Composer";
 import { Footer } from "./components/Footer";
+import { GoogleAuthModal } from "./components/GoogleAuthModal";
 import { Header } from "./components/Header";
+import { useAuth } from "./contexts/AuthContext";
 import { useBackendConnection } from "./hooks/useBackendConnection";
 import { useSpeechPlayback } from "./hooks/useSpeechPlayback";
 import type { ChatHistoryItem, ChatMessage } from "./types";
@@ -27,8 +30,39 @@ function toApiHistory(messages: ChatMessage[]): ChatHistoryItem[] {
 export default function App() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [loading, setLoading] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showContentPanel, setShowContentPanel] = useState(false);
   const { connected, voiceEnabled, checking, refresh } = useBackendConnection();
   const { playingId, loadingId, speak } = useSpeechPlayback();
+  const {
+    isAuthenticated,
+    loading: authLoading,
+    login,
+    logout,
+    user,
+    markPendingChangeContent,
+    consumePendingChangeContent,
+  } = useAuth();
+
+  useEffect(() => {
+    if (!authLoading && isAuthenticated && consumePendingChangeContent()) {
+      setShowContentPanel(true);
+    }
+  }, [authLoading, isAuthenticated, consumePendingChangeContent]);
+
+  const handleChangeContent = useCallback(() => {
+    if (isAuthenticated) {
+      setShowContentPanel(true);
+      return;
+    }
+    markPendingChangeContent();
+    setShowAuthModal(true);
+  }, [isAuthenticated, markPendingChangeContent]);
+
+  const handleContinueWithGoogle = useCallback(() => {
+    setShowAuthModal(false);
+    login("/");
+  }, [login]);
 
   const sendMessage = useCallback(
     async (text: string) => {
@@ -103,7 +137,15 @@ export default function App() {
   return (
     <div className="shell">
       <div className="app">
-        <Header connected={connected} checking={checking} onRetry={refresh} />
+        <Header
+          connected={connected}
+          checking={checking}
+          onRetry={refresh}
+          onChangeContent={handleChangeContent}
+          isAuthenticated={isAuthenticated}
+          userEmail={user?.email}
+          onLogout={() => void logout()}
+        />
         {!connected && (
           <div className="app__offline-banner" role="alert">
             <strong>Backend offline.</strong> Start the server in another terminal:{" "}
@@ -135,6 +177,16 @@ export default function App() {
         </div>
         <Footer />
       </div>
+
+      <GoogleAuthModal
+        open={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onContinue={handleContinueWithGoogle}
+      />
+      <ChangeContentPanel
+        open={showContentPanel}
+        onClose={() => setShowContentPanel(false)}
+      />
     </div>
   );
 }

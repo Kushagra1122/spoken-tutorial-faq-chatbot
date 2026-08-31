@@ -32,6 +32,14 @@ class Settings(BaseSettings):
     max_history_messages: int = 20
     retrieval_top_k: int = 5
     faqs_path: Path = ROOT_DIR / "data" / "faqs.json"
+    google_client_id: str = ""
+    google_client_secret: str = ""
+    google_redirect_uri: str = "http://127.0.0.1:8000/api/auth/google/callback"
+    jwt_secret_key: str = "your-secret-key-change-in-production"
+    jwt_algorithm: str = "HS256"
+    jwt_expiration_hours: int = 24
+    allowed_email_domain: str = "@edupyramids.org"
+    frontend_url: str = "http://127.0.0.1:5173"
     cors_origins: list[str] = [
         "http://localhost:5173",
         "http://127.0.0.1:5173",

@@ -49,6 +49,10 @@ class FaqRetriever:
         texts = [entry.searchable_text() for entry in self._entries]
         self._vectors = self._normalize(self._embed(texts))
 
+    def reload(self) -> None:
+        self._entries = load_faqs()
+        self.initialize()
+
     @staticmethod
     def _keyword_score(query: str, entry: FaqEntry) -> float:
         q = query.lower().strip()

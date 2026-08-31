@@ -14,6 +14,10 @@ def set_answer_service(service: AnswerService) -> None:
     _answer_service = service
 
 
+def get_answer_service() -> AnswerService | None:
+    return _answer_service
+
+
 class HistoryItem(BaseModel):
     role: str = Field(..., pattern="^(user|assistant)$")
     content: str = Field(..., min_length=1, max_length=4000)

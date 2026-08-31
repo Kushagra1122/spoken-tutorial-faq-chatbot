@@ -33,3 +33,20 @@ def load_faqs(path: Path | None = None) -> list[FaqEntry]:
         )
         for item in raw
     ]
+
+
+def save_faqs(entries: list[FaqEntry], path: Path | None = None) -> None:
+    faq_path = path or settings.faqs_path
+    payload = [
+        {
+            "id": entry.id,
+            "category": entry.category,
+            "question": entry.question,
+            "answer": entry.answer,
+            "aliases": entry.aliases,
+        }
+        for entry in entries
+    ]
+    with open(faq_path, "w", encoding="utf-8") as f:
+        json.dump(payload, f, ensure_ascii=False, indent=2)
+        f.write("\n")
